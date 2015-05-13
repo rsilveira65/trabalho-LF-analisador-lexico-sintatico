@@ -23,7 +23,7 @@ linhas =1
 colunas =1
 erroLexico = True
 flag = True
-#palavra=""
+
 
 # Função incrementalinha, sempre que chamanda, incrementa a linha ou coluna e retorna esses valores 
 
@@ -91,9 +91,7 @@ def geraLista():
                break      
                        
 def showErro(letra):
-     global fileb
-     global linhas
-     global erroLexico
+     global fileb, linhas, erroLexico   	
      erroLexico = False
      
      fileb = open("log.txt", "w")
@@ -159,33 +157,27 @@ def q0(letra):
           showErro(letra)
           
 
-
 def q21(letra):
      #print "q21:"+letra
-     tokens.append(" ^ ")
+     tokens.append("AND")
      exit
      
 def q22(letra):
-     tokens.append(" , ")
+     tokens.append("VIR")
      exit
      
 def q23(letra):
      #print "q23:"+letra
-     tokens.append(" ( ")
+     tokens.append("PAE")
      exit
      
 def q24(letra):
-     tokens.append(" ) ")
+     tokens.append("PAD")
      exit
-    
-def q25(letra):
-     tokens.append(" V ")
-     exit
-         
 
 def q30(letra):
      #print "q30:"+letra
-     tokens.append(" { ")
+     tokens.append("CHE")
      exit 
      
 def q31(letra):
@@ -215,14 +207,14 @@ def q33(letra):
      letra = proximaletra()
      #print "q33:"+letra
      if is_valido(letra):
-          tokens.append("=:=")
+          tokens.append("EQU")
           exit  
      else:
           showErro(letra)   
           
 def q34(letra):
      #print "q34:"+letra
-     tokens.append(" } ")
+     tokens.append("CHD")
      flag=True
      exit  
           
@@ -259,7 +251,7 @@ def q37(letra):
 
 def q38(letra):
      #print "q38:"+letra
-     tokens.append(" ' ")
+     tokens.append("NOT")
      exit
      
 def q39(letra):
@@ -282,18 +274,13 @@ def q40(letra):
      else:
           showErro(letra) 
           
-def q41(letra):
-     tokens.append(" v ")
-     exit    
-  
        
 def q42(letra):
-     tokens.append(" ; ")
+     tokens.append("PTV") 
      flag=True
      exit  
      
-
-          
+    
 def q69(letra):
      global palavra, flag, aux
      palavra += letra
@@ -313,20 +300,20 @@ def q69(letra):
                          q70(teste,teste2)
                          break
                         
-          else:     	#variaveis com uma só letra
+          else:     	
                
                teste=palavra
                if teste=='V':
-                    tokens.append("TRUE")
+                    tokens.append("TRU")
                elif teste=='v':
                     tokens.append("OR")
                elif teste=='1':
-                    tokens.append("TRUE")
+                    tokens.append("TRU")
                elif teste=='0':
-                    tokens.append("FALSE")
+                    tokens.append("FAL")
                else:
                 
-                    tokens.append("ID")
+                    tokens.append("VAR")
                palavra=""
                flag=False
                aux.append(letra)
@@ -337,11 +324,8 @@ def q69(letra):
           showErro(letra)
           
 def q70(teste,teste2):
-     global palavra
-     global letra
-     global aux
-     global flag
- 
+     global palavra, letra, aux, flag
+   
      if "Read" == palavra:
           tokens.append("RE")
           palavra=""
@@ -368,30 +352,36 @@ def q70(teste,teste2):
           exit
        
      else:
-          tokens.append("ID")
+          tokens.append("VAR")
           palavra=""
           aux.append(teste2)
           flag = False
           exit
-                      
-     
+                        
 def le_token():
-     global flag
-     global palavra
-     global letra
+     global flag, palavra, letra
+     
      if flag == False:
           letra = aux.pop()
           flag=True
      else:
           letra=proximaletra()
+          
      q0(letra)
      return tokens.pop()
      
 def getErrolexico():
      return erroLexico
+
+def getColunaLinha(x):
+     global linhas, colunas
+     if x == 0:
+          return colunas
+     else:
+          return linhas
+   
  
  
-     
 geraLista()  
 
 print le_token() 
