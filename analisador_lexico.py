@@ -10,15 +10,15 @@ tokens = []
 lista_de_caracteres=[]
 
 #Conjunto dos simbolos não reservados em Q0 ex: if "i" é reservado, por isso não está aqui
-naoreservado= ["z","b","_","c", "d","f","g","h","j","k","l","m","n","o","a","p","q","r","s","t","u","x","w","y","z"]
+#naoreservado= ["ç","b","_","c", "d","f","g","h","j","k","l","m","n","o","a","p","q","r","s","t","u","x","w","y","z"]
 
-alfabeto = ["z","a","_","A","b","B","a","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
-numeros = ["z","0","1","2","3","4","5","6","7","8","9"]
+alfabeto = ["ç","a","_","A","b","B","a","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
+numeros = ["0","0","1","2","3","4","5","6","7","8","9"]
 palavra=""
 letra=""
 aux=[]
 #Conjunto de todos simbolos validos
-valido =["z","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","=","w"]
+valido =["ç","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","=","w"]
 linhas =1
 colunas =1
 erroLexico = True
@@ -111,10 +111,19 @@ def showErro(letra):
 #-------------------------------------------------------               
 
 def proximaletra():
-     letra = lista_de_caracteres.pop()
+     global  flag, palavra, letra
+     if flag == False:
+               letra = aux.pop()
+               flag=True
+     else:
+          letra = lista_de_caracteres.pop()
      if letra =="\n":
           linha=incLinha_Coluna(1)
-          letra = lista_de_caracteres.pop()
+          if flag == False:
+               letra = aux.pop()
+               flag=True
+          else:
+               letra = lista_de_caracteres.pop()
      incLinha_Coluna(0)
      return letra
      
@@ -150,7 +159,7 @@ def q0(letra):
           elif letra== ",":
                q22(letra)
           elif letra== "EOF":
-               q22(letra)
+               q90(letra)
           else:
                showErro(letra)
      else:
@@ -160,6 +169,11 @@ def q0(letra):
 def q21(letra):
      #print "q21:"+letra
      tokens.append("AND")
+     exit
+     
+def q90(letra):
+     #print "q21:"+letra
+     tokens.append("EOF")
      exit
      
 def q22(letra):
@@ -360,13 +374,7 @@ def q70(teste,teste2):
                         
 def le_token():
      global flag, palavra, letra
-     
-     if flag == False:
-          letra = aux.pop()
-          flag=True
-     else:
-          letra=proximaletra()
-          
+     letra=proximaletra()     
      q0(letra)
      return tokens.pop()
      
@@ -383,83 +391,12 @@ def getColunaLinha(x):
  
  
 geraLista()  
+while not le_token()=="EOQ":
+     print le_token() 
 
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token()
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token()
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token()
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token() 
-print le_token()   
-print le_token() 
-print le_token() 
-print le_token()  
-print le_token() 
-print le_token() 
-print le_token()                               
+
+
+     
+                             
 
 
