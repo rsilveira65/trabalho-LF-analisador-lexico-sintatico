@@ -1,5 +1,5 @@
 ============================================
-ERRO LÉXICO: Caracter 2 inválido! 
-Linha: 5
-Coluna: 2
+ERRO LÉXICO: Caracter [	] inválido! 
+Linha: 2
+Coluna: 1
 ============================================

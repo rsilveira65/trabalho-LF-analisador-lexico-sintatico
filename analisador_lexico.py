@@ -4,21 +4,20 @@ import string
 '''
 @author: Rafael Silveira rsilveira@inf.ufpel.edu.br
 Analisador Léxico
-
 '''
 tokens = []
 lista_de_caracteres=[]
 
 #Conjunto dos simbolos não reservados em Q0 ex: if "i" é reservado, por isso não está aqui
-#naoreservado= ["ç","b","_","c", "d","f","g","h","j","k","l","m","n","o","a","p","q","r","s","t","u","x","w","y","z"]
+naoreservado= ["z","b","_","c", "d","f","g","h","j","k","l","m","n","o","a","p","q","r","s","t","u","x","w","y","z"]
 
-alfabeto = ["ç","a","_","A","b","B","a","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
-numeros = ["0","0","1","2","3","4","5","6","7","8","9"]
+alfabeto = ["z","a","_","A","b","B","a","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
+numeros = ["z","0","1","2","3","4","5","6","7","8","9"]
 palavra=""
 letra=""
 aux=[]
 #Conjunto de todos simbolos validos
-valido =["ç","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","=","w"]
+valido =["z","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","=","w"]
 linhas =1
 colunas =1
 erroLexico = True
@@ -111,19 +110,15 @@ def showErro(letra):
 #-------------------------------------------------------               
 
 def proximaletra():
-     global  flag, palavra, letra
-     if flag == False:
-               letra = aux.pop()
-               flag=True
-     else:
-          letra = lista_de_caracteres.pop()
+     letra = lista_de_caracteres.pop()
      if letra =="\n":
           linha=incLinha_Coluna(1)
-          if flag == False:
-               letra = aux.pop()
-               flag=True
-          else:
-               letra = lista_de_caracteres.pop()
+          letra = lista_de_caracteres.pop()
+     if letra =="\t":
+          incLinha_Coluna(0)
+          incLinha_Coluna(0)
+          incLinha_Coluna(0)
+          letra = lista_de_caracteres.pop()
      incLinha_Coluna(0)
      return letra
      
@@ -132,170 +127,169 @@ def proximaletra():
 def q0(letra):
      if is_valido(letra):
           while letra =="" or letra ==" ":
-               letra=proximaletra()
-               
+               letra=proximaletra()  
           if (is_letra(letra) or is_numero(letra)):
-               q69(letra)
-          elif letra == ";":
-               q42(letra)
-          elif letra== ")":
-               q24(letra)
-          elif letra == "(":
-               q23(letra)
-          elif letra == "{":
-               q30(letra)
-          elif letra== "}":
-               q34(letra)
+               q19(letra)
           elif letra== "^":
-               q21(letra)
-          elif letra == "'":
-               q38(letra)
-          elif letra== "<":
-               q35(letra)
+               q1(letra)
+          elif letra== "}":
+               q2(letra)
           elif letra == "-":
-               q39(letra)
-          elif letra== "=":
-               q31(letra)
+               q3(letra)
+          elif letra == "'":
+               q5(letra)
+          elif letra == "(":
+               q6(letra)
+          elif letra == "{":
+               q7(letra)
+          elif letra== "<":
+               q9(letra)
           elif letra== ",":
-               q22(letra)
+               q12(letra)
+          elif letra == ";":
+               q14(letra)
+          elif letra== ")":
+               q15(letra)
+          elif letra== "=":
+               q16(letra)
           elif letra== "EOF":
-               q90(letra)
+               q21(letra)
           else:
                showErro(letra)
      else:
           showErro(letra)
           
 
-def q21(letra):
-     #print "q21:"+letra
+def q1(letra):
+     #print "q1:"+letra
      tokens.append("AND")
      exit
      
-def q90(letra):
-     #print "q21:"+letra
-     tokens.append("EOF")
-     exit
-     
-def q22(letra):
+def q12(letra):
      tokens.append("VIR")
      exit
      
-def q23(letra):
-     #print "q23:"+letra
+def q6(letra):
+     #print "q6:"+letra
      tokens.append("PAE")
      exit
      
-def q24(letra):
+def q15(letra):
      tokens.append("PAD")
      exit
 
-def q30(letra):
-     #print "q30:"+letra
+def q7(letra):
+     #print "q7:"+letra
      tokens.append("CHE")
      exit 
      
-def q31(letra):
+def q16(letra):
      letra = proximaletra()
-     #print "q31:"+letra
+     #print "q16:"+letra
      if is_valido(letra):
           if letra == ":":
-               q32(letra)
+               q17(letra)
           else:
                showErro(letra)
      else:
           showErro(letra) 
           
-def q32(letra):
+def q17(letra):
      global flag
      letra = proximaletra()
-     #print "q32:"+letra
+     #print "q17:"+letra
      if is_valido(letra):
           if letra == "=":
-               q33(letra)
+               q18(letra)
           else:
                showErro(letra)
      else:
           showErro(letra) 
           
-def q33(letra):
+def q18(letra):
      letra = proximaletra()
-     #print "q33:"+letra
+     #print "q18:"+letra
      if is_valido(letra):
           tokens.append("EQU")
           exit  
      else:
           showErro(letra)   
           
-def q34(letra):
-     #print "q34:"+letra
+def q2(letra):
+     #print "q2:"+letra
      tokens.append("CHD")
      flag=True
      exit  
           
-def q35(letra):
+def q9(letra):
      letra = proximaletra()
-     #print "q35:"+letra
+     #print "q9:"+letra
      if is_valido(letra):
           if letra == "-":
-               q36(letra)
+               q10(letra)
           else:
                showErro(letra)
      else:
           showErro(letra) 
           
-def q36(letra):
+def q10(letra):
      letra = proximaletra()
-     #print "q36:"+letra
+     #print "q10:"+letra
      if is_valido(letra):
           if letra == ">":
-               q37(letra)
+               q11(letra)
           else:
                showErro(letra)
      else:
           showErro(letra) 
           
-def q37(letra):
+def q11(letra):
      letra = proximaletra()
-     #print "q37:"+letra
+     #print "q11:"+letra
      if is_valido(letra):
-          tokens.append("<->")
+          tokens.append("IMP")
           exit  
      else:
           showErro(letra)   
 
-def q38(letra):
-     #print "q38:"+letra
+def q5(letra):
+     #print "q5:"+letra
      tokens.append("NOT")
      exit
      
-def q39(letra):
+def q3(letra):
      letra = proximaletra()
-     #print "q39:"+letra
+     #print "q3:"+letra
      if is_valido(letra):
           if letra == ">":
-               q40(letra)
+               q4(letra)
           else:
                showErro(letra)
      else:
           showErro(letra) 
        
-def q40(letra):
+def q4(letra):
      letra = proximaletra()
-     #print "q40:"+letra
+     #print "q4:"+letra
      if is_valido(letra):
-          tokens.append("->")
+          tokens.append("IF")
           exit  
      else:
           showErro(letra) 
           
        
-def q42(letra):
+def q14(letra):
      tokens.append("PTV") 
+     flag=True
+     exit  
+
+def q21(letra):
+     tokens.append("EOF") 
      flag=True
      exit  
      
     
-def q69(letra):
+def q19(letra):
      global palavra, flag, aux
      palavra += letra
      letra = proximaletra()
@@ -311,7 +305,7 @@ def q69(letra):
                          
                          teste=palavra
                          teste2=letra
-                         q70(teste,teste2)
+                         q20(teste,teste2)
                          break
                         
           else:     	
@@ -337,7 +331,7 @@ def q69(letra):
      else:
           showErro(letra)
           
-def q70(teste,teste2):
+def q20(teste,teste2):
      global palavra, letra, aux, flag
    
      if "Read" == palavra:
@@ -374,7 +368,13 @@ def q70(teste,teste2):
                         
 def le_token():
      global flag, palavra, letra
-     letra=proximaletra()     
+     
+     if flag == False:
+          letra = aux.pop()
+          flag=True
+     else:
+          letra=proximaletra()
+          
      q0(letra)
      return tokens.pop()
      
@@ -391,12 +391,64 @@ def getColunaLinha(x):
  
  
 geraLista()  
-while not le_token()=="EOQ":
-     print le_token() 
 
-
-
-     
-                             
-
-
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
+print le_token()
