@@ -77,7 +77,7 @@ def is_naoReservado(letra):
 
 def geraLista():
      global lista_de_caracteres
-     arquivo = open("TestFile/test1.txt")
+     arquivo = open("TestFile/test3.txt")
      while True:
 
           conteudo_texto = arquivo.read(1)
@@ -162,25 +162,25 @@ def q0(letra):
 
 def q1(letra):
      #print "q1:"+letra
-     tokens.append("AND")
+     tokens.append({'nome':'AND','linha':linhas, 'coluna':colunas})
      exit
      
 def q12(letra):
-     tokens.append("VIR")
+     tokens.append({'nome':'VIR','linha':linhas, 'coluna':colunas})
      exit
      
 def q6(letra):
      #print "q6:"+letra
-     tokens.append("PAE")
+     tokens.append({'nome':'PAE','linha':linhas, 'coluna':colunas})
      exit
      
 def q15(letra):
-     tokens.append("PAD")
+     tokens.append({'nome':'PAD','linha':linhas, 'coluna':colunas})
      exit
 
 def q7(letra):
      #print "q7:"+letra
-     tokens.append("CHE")
+     tokens.append({'nome':'CHE','linha':linhas, 'coluna':colunas})
      exit 
      
 def q16(letra):
@@ -210,14 +210,14 @@ def q18(letra):
      letra = proximaletra()
      #print "q18:"+letra
      if is_valido(letra):
-          tokens.append("EQU")
+          tokens.append({'nome':'ATR','linha':linhas, 'coluna':colunas})
           exit  
      else:
           showErro(letra)   
           
 def q2(letra):
      #print "q2:"+letra
-     tokens.append("CHD")
+     tokens.append({'nome':'CHD','linha':linhas, 'coluna':colunas})
      flag=True
      exit  
           
@@ -247,14 +247,14 @@ def q11(letra):
      letra = proximaletra()
      #print "q11:"+letra
      if is_valido(letra):
-          tokens.append("IMP")
+          tokens.append({'nome':'IMP','linha':linhas, 'coluna':colunas})
           exit  
      else:
           showErro(letra)   
 
 def q5(letra):
      #print "q5:"+letra
-     tokens.append("NOT")
+     tokens.append({'nome':'NOT','linha':linhas, 'coluna':colunas})
      exit
      
 def q3(letra):
@@ -272,19 +272,19 @@ def q4(letra):
      letra = proximaletra()
      #print "q4:"+letra
      if is_valido(letra):
-          tokens.append("IF")
+          tokens.append({'nome':'EQU','linha':linhas, 'coluna':colunas})
           exit  
      else:
           showErro(letra) 
           
        
 def q14(letra):
-     tokens.append("PTV") 
+     tokens.append({'nome':'PTV','linha':linhas, 'coluna':colunas}) 
      flag=True
      exit  
 
 def q21(letra):
-     tokens.append("EOF") 
+     tokens.append({'nome':'EOF','linha':linhas, 'coluna':colunas}) 
      flag=True
      exit  
      
@@ -312,16 +312,15 @@ def q19(letra):
                
                teste=palavra
                if teste=='V':
-                    tokens.append("TRU")
+                    tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
                elif teste=='v':
-                    tokens.append("OR")
+                    tokens.append({'nome':'OR','linha':linhas, 'coluna':colunas})
                elif teste=='1':
-                    tokens.append("TRU")
+                    tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
                elif teste=='0':
-                    tokens.append("FAL")
+                    tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
                else:
-                
-                    tokens.append("VAR")
+                    tokens.append({'nome':'VAR','linha':linhas, 'coluna':colunas})
                palavra=""
                flag=False
                aux.append(letra)
@@ -335,32 +334,32 @@ def q20(teste,teste2):
      global palavra, letra, aux, flag
    
      if "Read" == palavra:
-          tokens.append("RE")
+          tokens.append({'nome':'REA','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "Print" == palavra:          
-          tokens.append("PR")
+          tokens.append({'nome':'PR','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "true" == palavra:
-          tokens.append("PR")
+          tokens.append({'nome':'PR','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "false" == palavra:
-          tokens.append("FAL")
+          tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "if" == palavra:
-          tokens.append("IF")
+          tokens.append({'nome':'IF','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "else" == palavra:
-          tokens.append("ELSE")
+          tokens.append({'nome':'ELSE','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
        
      else:
-          tokens.append("VAR")
+          tokens.append({'nome':'VAR','linha':linhas, 'coluna':colunas})
           palavra=""
           aux.append(teste2)
           flag = False
@@ -392,63 +391,3 @@ def getColunaLinha(x):
  
 geraLista()  
 
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
-print le_token()
