@@ -28,13 +28,13 @@
 		<state id="6" name="q18">
 			<x>436.0</x>
 			<y>30.0</y>
-			<label>EQU</label>
+			<label>ATR</label>
 			<final/>
 		</state>
 		<state id="7" name="q4">
 			<x>272.0</x>
 			<y>595.0</y>
-			<label>IF</label>
+			<label>IMP</label>
 			<final/>
 		</state>
 		<state id="8" name="q3">
@@ -76,7 +76,7 @@
 		<state id="15" name="q11">
 			<x>33.0</x>
 			<y>307.0</y>
-			<label>IMP</label>
+			<label>EQU</label>
 			<final/>
 		</state>
 		<state id="16" name="q10">
@@ -86,7 +86,7 @@
 		<state id="17" name="q20">
 			<x>930.0</x>
 			<y>334.0</y>
-			<label>VAR, TRUE, FALSE, RE, PR</label>
+			<label>VAR, TRUE, FALSE, RE, PR, OR, IF, ELSE</label>
 			<final/>
 		</state>
 		<state id="18" name="q14">
@@ -112,13 +112,8 @@
 		<!--The list of transitions.-->
 		<transition>
 			<from>0</from>
-			<to>19</to>
-			<read>)</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>3</to>
-			<read>ˆ</read>
+			<to>18</to>
+			<read>; </read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -126,9 +121,9 @@
 			<read>&lt;</read>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>11</to>
-			<read>{</read>
+			<from>21</from>
+			<to>12</to>
+			<read>:</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -137,18 +132,73 @@
 		</transition>
 		<transition>
 			<from>0</from>
+			<to>19</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>12</from>
+			<to>6</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>10</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>20</from>
+			<to>17</to>
+			<read>V - {[a-z]U[A-Z]U[0-9]U[_]}   </read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>11</to>
+			<read>{</read>
+		</transition>
+		<transition>
+			<from>8</from>
+			<to>7</to>
+			<read>&gt;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>14</to>
+			<read>,</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>9</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>3</to>
+			<read>ˆ</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>8</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>20</to>
+			<read>[a-z]U[A-Z]U[_]</read>
+		</transition>
+		<transition>
+			<from>0</from>
 			<to>5</to>
 			<read>}</read>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>18</to>
-			<read>; </read>
+			<from>13</from>
+			<to>16</to>
+			<read>-</read>
 		</transition>
 		<transition>
-			<from>21</from>
-			<to>12</to>
-			<read>:</read>
+			<from>20</from>
+			<to>20</to>
+			<read>[a-z]U[A-Z]U[_]U[0-9]</read>
 		</transition>
 		<transition>
 			<from>16</from>
@@ -165,62 +215,12 @@
 			<to>21</to>
 			<read>=</read>
 		</transition>
-		<transition>
-			<from>12</from>
-			<to>6</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>20</from>
-			<to>20</to>
-			<read>[a-z]U[A-Z]U[_]U[0-9]</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>9</to>
-			<read>'</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>14</to>
-			<read>,</read>
-		</transition>
-		<transition>
-			<from>13</from>
-			<to>16</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>8</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>10</to>
-			<read>(</read>
-		</transition>
-		<transition>
-			<from>20</from>
-			<to>17</to>
-			<read>V - {[a-z]U[A-Z]U[0-9]U[_]}   </read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>20</to>
-			<read>[a-z]U[A-Z]U[_]</read>
-		</transition>
-		<transition>
-			<from>8</from>
-			<to>7</to>
-			<read>&gt;</read>
-		</transition>
 		<note>
 			<text>ESP -- Espaço
 EOF -- Fim de arquivo
 TAB -- Tabulação</text>
-			<x>533.0</x>
-			<y>222.0</y>
+			<x>331.0</x>
+			<y>138.0</y>
 		</note>
 	</automaton>
 </structure>

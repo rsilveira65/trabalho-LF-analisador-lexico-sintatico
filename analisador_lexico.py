@@ -77,7 +77,7 @@ def is_naoReservado(letra):
 
 def geraLista():
      global lista_de_caracteres
-     arquivo = open("teste.txt")
+     arquivo = open("TestFile/test1.txt")
      while True:
 
           conteudo_texto = arquivo.read(1)
