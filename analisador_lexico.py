@@ -86,7 +86,7 @@ def geraLista():
           if conteudo_texto == '':
                lista_de_caracteres.append("EOF")
                lista_de_caracteres.reverse()
-               print lista_de_caracteres
+               print "Saida do Analisador Léxico: ",lista_de_caracteres
                break      
                        
 def showErro(letra):

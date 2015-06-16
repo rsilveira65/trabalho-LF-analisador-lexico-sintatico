@@ -1,45 +1,65 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+@author: Rafael Silveira rsilveira@inf.ufpel.edu.br
+Analisador Sintático
+'''
 from analisador_lexico import *
-def exp(token):
+def s_linha(token):
+	print token['nome']
+	if token['nome'] =="PR":
+		s(token)
+	elif token== "VAR":
+		s(token)
+	elif token['nome']== "REA":
+		#print "auheiahe"
+		Read(token)
+	elif token['nome']== "IF":
+		s(token)
+	elif token['nome']== "VAR":
+		s(token)
+	elif token['nome']== "EOF":
+		print "Aceito pelo Analisador Sintatico"
+		
+def s(token):
+	print token['nome']
+	if token['nome'] =="PR":
+		Print(token)
+	elif token['nome']== "REA":
+		Read(token)
+	elif token['nome']== "VAR":
+		Var(token)
+	elif token['nome']== "IF":
+		If(token)
+	
+		
+def Read(token):
 	token = le_token()
 	print token['nome']
-	if token['nome'] =="CHE":
-		token = le_token()
-		if token== "VAR":
-			token = le_token()
-			print token
-			if token['nome'] =="CHD":
-				token = le_token()
-				if token['nome'] =="PTV":
-					print "Atribuicao"
-				else:
-					print "nao deu"
-			else: 
-				print "ops"
-		else:
-			print "nao foi por ai"	
-	
-			
-	elif token['nome'] =="VAR":
-		token = le_token()
-		print token
-		if token['nome'] =="PTV":
-			print "Atribuicao2"
-		else:
-			print "nonono"
-	
-def s(token):
-	if token['nome'] == "VAR":
-		token = le_token()
-		print token
-		if token['nome'] =="ATR":
-			exp(token)
-		else:
-			print "deu merda1"
-	else:
-		print token['nome']
-		print "deu merda2"
-	
-if getErrolexico() == True:
+	if token['nome'] =="VAR":
+		Var(token)
+
+def Print(token):
 	token = le_token()
-	s(token)
+	print token['nome']
+	if token['nome'] =="VAR":
+		Var(token)
+		
+def Var(token):
+	token = le_token()
+	print token['nome']
+	if token['nome'] =="PTV":
+		token = le_token()
+		print token['nome']
+		s_linha(token)
+
+	
+		
+token = le_token()		
+s_linha(token)
+
+		
+
+
+
 	
