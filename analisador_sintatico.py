@@ -5,6 +5,7 @@
 Analisador Sintático
 '''
 from analisador_lexico import *
+import sys 
 
 def s_linha(token):
 	print token
@@ -14,8 +15,6 @@ def s_linha(token):
 		if token['nome']=="PRI":
 			print token
 			S(token)
-
-
 
 def S(token):
 	token = le_token()
@@ -38,7 +37,10 @@ def FINAL(token):
 		S(token)
 		
 		
-		
+#parametro = sys.argv[1:]
+
+entrada = "TestFile/test3.txt"
+geraLista(entrada) 
 	
 token = le_token()
 print token
@@ -162,7 +164,6 @@ token = le_token()
 print token
 token = le_token()
 print token
-
 token = le_token()
 print token
 token = le_token()

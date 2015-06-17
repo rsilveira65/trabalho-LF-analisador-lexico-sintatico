@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import string
 '''
 @author: Rafael Silveira rsilveira@inf.ufpel.edu.br
@@ -24,11 +25,9 @@ flagVariavel = False
 # Função incrementalinha, sempre que chamanda, incrementa a linha ou coluna e retorna esses valores 
 
 def incLinha_Coluna(x):
-          global linhas
-          global colunas
+          global linhas, colunas
           if x == 0:
                     colunas+=1
-                    #print "coluna ",colunas
                     return colunas
           elif x == 1:
                     linhas+=1
@@ -65,15 +64,15 @@ def is_valido(letra):
                 
 #------------------------------------------------------- 
 #   abre o arquivo de entrada e carrega todos caracteres para uma lista
-def geraLista():
+def geraLista(entrada):
      global lista_de_caracteres
-     arquivo = open("TestFile/test3.txt")
+     arquivo = open(entrada)
      while True:
           conteudo_texto = arquivo.read(1)
           if conteudo_texto == '':
                lista_de_caracteres.append("+") 
                lista_de_caracteres.reverse()
-               print "Caracteres do Analisador Léxico: ",lista_de_caracteres
+               print "Caracteres carregados com sucesso!: ",lista_de_caracteres
                break 
           lista_de_caracteres.append(conteudo_texto)
                          
@@ -115,7 +114,7 @@ def proximaletra():
           incLinha_Coluna(0)
           return letra
      else: 
-          print "Acabou os tokens"
+          print "Acabou os caracteres"
           return
      
      
@@ -299,10 +298,10 @@ def q18(letra):          #achou uma atribuição =:= , caso o proximo caracter s
 
 #---------------------------------------------------        
 def q19(letra):
-     global palavra, flagVariavel, aux
+     global palavra, aux
      palavra += letra  #concatena segundo caracter
      letra = proximaletra() #pega proximo caracter
-     #print letra, "oii"
+     #print letra
      if is_valido(letra):  #testa se é válido
           if (is_letra(letra) or is_numero(letra)): #testa se é uma letra ou um numero
                palavra += letra #concatena proxima letra
@@ -384,13 +383,13 @@ def q21(letra):
 
 def le_token(): #funcao principal 
      global flagVariavel,letra
-     if lista_de_caracteres:   
+     if lista_de_caracteres or aux:   
+
           if flagVariavel == True: #caso tenha achado uma variavel por ultimo, pega ultimo caracter lido
                letra = aux.pop()
                flagVariavel=False #seta flag false
           else:
                letra=proximaletra() #se nao, pega proximo caracter da lista referente aso caracteres do arquivo
-          
           q0(letra)
           if tokens:
                return tokens.pop() #reorna token que foi armazenado nesta lista
@@ -411,6 +410,5 @@ def getColunaLinha(x):
    
  
 
-geraLista() 
  
 
