@@ -5,58 +5,187 @@
 Analisador Sintático
 '''
 from analisador_lexico import *
-def s_linha(token):
-	print token['nome']
-	if token['nome'] =="PR":
-		s(token)
-	elif token== "VAR":
-		s(token)
-	elif token['nome']== "REA":
-		#print "auheiahe"
-		Read(token)
-	elif token['nome']== "IF":
-		s(token)
-	elif token['nome']== "VAR":
-		s(token)
-	elif token['nome']== "EOF":
-		print "Aceito pelo Analisador Sintatico"
-		
+
 def s(token):
-	print token['nome']
-	if token['nome'] =="PR":
-		Print(token)
-	elif token['nome']== "REA":
-		Read(token)
-	elif token['nome']== "VAR":
-		Var(token)
-	elif token['nome']== "IF":
-		If(token)
-	
-		
-def Read(token):
-	token = le_token()
-	print token['nome']
-	if token['nome'] =="VAR":
-		Var(token)
+	print token
+	if token['nome']=='VIR':
 
-def Print(token):
-	token = le_token()
-	print token['nome']
-	if token['nome'] =="VAR":
-		Var(token)
+		return 1
+	else:
+		if token['nome']=='IMP':
+			
+			token = le_token()
+			print token
+			if B(token):
+				return 1
+			else:
+				return 0
+		else:
+			return 0
+			
+def B(token):
+	print token
+	if token['nome']=="^":
+		B(token)
+	elif token['nome']=="EOF":
+		#print token
+		return 1
+	else:
+		return 0
 		
-def Var(token):
-	token = le_token()
-	print token['nome']
-	if token['nome'] =="PTV":
-		token = le_token()
-		print token['nome']
-		s_linha(token)
-
+		
 	
-		
-token = le_token()		
-s_linha(token)
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+token = le_token()
+print token
+
+
+
+
+
+
+
+
+
+#print s(token)
 
 		
 

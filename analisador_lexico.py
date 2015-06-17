@@ -17,11 +17,11 @@ palavra=""
 letra=""
 aux=[]
 #Conjunto de todos simbolos validos
-valido =["z","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","=","w"]
+valido =["z","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","+","=","w"]
 linhas =1
 colunas =1
 erroLexico = True
-flag = True
+flagVariavel = False
 
 
 # Função incrementalinha, sempre que chamanda, incrementa a linha ou coluna e retorna esses valores 
@@ -74,21 +74,22 @@ def is_naoReservado(letra):
      except ValueError:
                return False
 #------------------------------------------------------- 
-
+#   abre o arquivo de entrada e carrega todos caracteres para uma lista
 def geraLista():
      global lista_de_caracteres
      arquivo = open("TestFile/test3.txt")
      while True:
-
           conteudo_texto = arquivo.read(1)
+          if conteudo_texto == '':
+               lista_de_caracteres.append("+") 
+               lista_de_caracteres.reverse()
+               print "Caracteres do Analisador Léxico: ",lista_de_caracteres
+               break 
           lista_de_caracteres.append(conteudo_texto)
                          
-          if conteudo_texto == '':
-               lista_de_caracteres.append("EOF")
-               lista_de_caracteres.reverse()
-               print "Saida do Analisador Léxico: ",lista_de_caracteres
-               break      
-                       
+         
+         
+# mostra o erro e grava em um arquivo de log!                      
 def showErro(letra):
      global fileb, linhas, erroLexico   	
      erroLexico = False
@@ -108,13 +109,13 @@ def showErro(letra):
      print "============================================"
      
 #-------------------------------------------------------               
-
+# funcao que le a proxima letra da lista
 def proximaletra():
-     letra = lista_de_caracteres.pop()
-     if letra =="\n":
+     letra = lista_de_caracteres.pop() #retira letra da lista
+     if letra =="\n":    #caso seja uma quebra de linha, incrementa linha
           linha=incLinha_Coluna(1)
           letra = lista_de_caracteres.pop()
-     if letra =="\t":
+     if letra =="\t":    #caso seja um tab, incrementa coluna 3 vezes
           incLinha_Coluna(0)
           incLinha_Coluna(0)
           incLinha_Coluna(0)
@@ -126,9 +127,9 @@ def proximaletra():
 
 def q0(letra):
      if is_valido(letra):
-          while letra =="" or letra ==" ":
+          while letra =="" or letra ==" ":  #enquanto for espaço, disconsidera e le proxima letra
                letra=proximaletra()  
-          if (is_letra(letra) or is_numero(letra)):
+          if (is_letra(letra) or is_numero(letra)): #caso seja uma letra ou um numero vai para estado 19
                q19(letra)
           elif letra== "^":
                q1(letra)
@@ -152,12 +153,12 @@ def q0(letra):
                q15(letra)
           elif letra== "=":
                q16(letra)
-          elif letra== "EOF":
+          elif letra== "+": #caso seja um fim de arquivo, vai para estado 21
                q21(letra)
           else:
-               showErro(letra)
+               showErro(letra) #caso nenhuma das opções, mostra erro"
      else:
-          showErro(letra)
+          showErro(letra) #caso não seja um caracter válido, mostra erro
           
 
 def q1(letra):
@@ -186,16 +187,15 @@ def q7(letra):
 def q16(letra):
      letra = proximaletra()
      #print "q16:"+letra
-     if is_valido(letra):
+     if is_valido(letra):       #caso seja um cacacter valido, se for igual a ":", vai para estado q17, caso nao for ":" é erro!
           if letra == ":":
                q17(letra)
           else:
                showErro(letra)
      else:
-          showErro(letra) 
+          showErro(letra)    #caso nao seja um caracter válido, motra erro!
           
 def q17(letra):
-     global flag
      letra = proximaletra()
      #print "q17:"+letra
      if is_valido(letra):
@@ -206,19 +206,17 @@ def q17(letra):
      else:
           showErro(letra) 
           
-def q18(letra):
+def q18(letra):          #achou uma atribuição =:= , caso o proximo caracter seja valido, gera o token
      letra = proximaletra()
      #print "q18:"+letra
-     if is_valido(letra):
+     if is_valido(letra): 
           tokens.append({'nome':'ATR','linha':linhas, 'coluna':colunas})
           exit  
      else:
-          showErro(letra)   
+          showErro(letra)   #caso seja um caracter invalido, mostra erro!
           
 def q2(letra):
-     #print "q2:"+letra
      tokens.append({'nome':'CHD','linha':linhas, 'coluna':colunas})
-     flag=True
      exit  
           
 def q9(letra):
@@ -247,7 +245,7 @@ def q11(letra):
      letra = proximaletra()
      #print "q11:"+letra
      if is_valido(letra):
-          tokens.append({'nome':'IMP','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'EQU','linha':linhas, 'coluna':colunas})
           exit  
      else:
           showErro(letra)   
@@ -272,7 +270,7 @@ def q4(letra):
      letra = proximaletra()
      #print "q4:"+letra
      if is_valido(letra):
-          tokens.append({'nome':'EQU','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'IMP','linha':linhas, 'coluna':colunas})
           exit  
      else:
           showErro(letra) 
@@ -280,61 +278,58 @@ def q4(letra):
        
 def q14(letra):
      tokens.append({'nome':'PTV','linha':linhas, 'coluna':colunas}) 
-     flag=True
-     exit  
-
-def q21(letra):
-     tokens.append({'nome':'EOF','linha':linhas, 'coluna':colunas}) 
-     flag=True
      exit  
      
     
 def q19(letra):
-     global palavra, flag, aux
-     palavra += letra
-     letra = proximaletra()
-     if is_valido(letra):
-          if is_letra(letra) or is_numero(letra):
-               palavra += letra
-               while True:
+     global palavra, flagVariavel, aux
+     palavra += letra  #concatena primeiro caracter
+     letra = proximaletra() #pega proximo caracter
+     #print letra, "oii"
+     if is_valido(letra):  #testa se é válido
+          if is_letra(letra) or is_numero(letra): #testa se é uma letra ou um numero
+               palavra += letra #concatena proxima letra
+               while True:  #vai pegando proximas letras até achar um caracter que nao seja um numero ou uma letra
                     letra = proximaletra()
-                    if letra != " ":
-                         palavra += letra
-
                     if (not is_letra(letra) and not is_numero(letra)):
-                         
-                         teste=palavra
-                         teste2=letra
-                         q20(teste,teste2)
+     	         	             
+                         print letra; q20(letra)  #vai para estado 20, onde deve aceitar o token e salva ultimo caracter
                          break
+                    if letra != " ":  #nao concatena espaços
+                         palavra += letra
+                         #print palavra 
+                         #print letra
+
+                    
                         
-          else:     	
+          else:   #caso seja valido e nao seja uma letra ou um numero, podera ser "V", "v", "1","0" 	
                
-               teste=palavra
-               if teste=='V':
+               if palavra=='V':
                     tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
-               elif teste=='v':
+               elif palavra=='v':
                     tokens.append({'nome':'OR','linha':linhas, 'coluna':colunas})
-               elif teste=='1':
+               elif palavra=='1':
                     tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
-               elif teste=='0':
+               elif palavra=='0':
                     tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
                else:
                     tokens.append({'nome':'VAR','linha':linhas, 'coluna':colunas})
+                    #print palavra
+                    #print letra 
                palavra=""
-               flag=False
-               aux.append(letra)
+               flagVariavel=True #seta flag de variavel e salva o caracter
+               aux.append(letra) #salva caracter na lista auxiliar
                exit
                          
           
      else:
-          showErro(letra)
+          showErro(letra) #caso caracter nao seja válido, erro!
           
-def q20(teste,teste2):
-     global palavra, letra, aux, flag
+def q20(letra):
+     global palavra, aux, flagVariavel
    
      if "Read" == palavra:
-          tokens.append({'nome':'REA','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'REA','linha':linhas, 'coluna':colunas}) #caso a palavra concatenada seja "Read", adiciona a lista e zera a variavel palavra
           palavra=""
           exit
      elif "Print" == palavra:          
@@ -359,20 +354,27 @@ def q20(teste,teste2):
           exit
        
      else:
-          tokens.append({'nome':'VAR','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'VAR','linha':linhas, 'coluna':colunas}) #caso nao seja nenhuma das palavras anteriores, é uma variavel
           palavra=""
-          aux.append(teste2)
-          flag = False
+          aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
-                        
+          
+def q21(letra):
+     tokens.append({'nome':'+','linha':linhas, 'coluna':colunas})  #final de arquivo
+     exit     
+  
+  
+# q0 -> q19 -> q20, onde são concatenados os caracteres até algum caracter diferente de letra e numero,
+ # por isso foi setada a flagVariavel e salvo esse caracter (diferente de letra e numero), para que na proxima chamada de le_token() nao seja perdido esse caracter.                      
 def le_token():
-     global flag, palavra, letra
+     global flagVariavel,letra
      
-     if flag == False:
+     if flagVariavel == True: #caso tenha achado uma variavel por ultimo, pega ultimo caracter lido
           letra = aux.pop()
-          flag=True
+          flagVariavel=False #seta flag false
      else:
-          letra=proximaletra()
+          letra=proximaletra() #se nao, pega proximo caracter da lista referente aso caracteres do arquivo
           
      q0(letra)
      return tokens.pop()
@@ -388,6 +390,7 @@ def getColunaLinha(x):
           return linhas
    
  
+
+geraLista() 
  
-geraLista()  
 

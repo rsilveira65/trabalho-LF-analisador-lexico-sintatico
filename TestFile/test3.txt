@@ -1,1 +1,2 @@
-Read b;
+Print abc ^ baa, aee v b, a -> c;
+
