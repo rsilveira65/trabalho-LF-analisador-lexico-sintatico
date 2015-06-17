@@ -1,4 +1,1 @@
-else if _s,
-Read  else; Read Prinst True False F rafaelaw; ca2ce4tew; q w F Pruint
-Read a';
-Print c;
+a=V;
