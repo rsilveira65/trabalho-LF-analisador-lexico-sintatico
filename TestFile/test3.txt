@@ -1,4 +1,4 @@
-a1 =:= a22;
+a1 =:= '''''''''a22;
 Read rafael;
 Print as';
 Read a, b,c;

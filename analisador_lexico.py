@@ -102,17 +102,22 @@ def showErro(letra):
 # funcao que le a proxima letra da lista
 def proximaletra():
      global colunas, linhas
-     letra = lista_de_caracteres.pop() #retira letra da lista
-     while letra =="\n":    #caso seja uma quebra de linha, incrementa linha
-          linha=incLinha_Coluna(1)
-          letra = lista_de_caracteres.pop()
-     while letra =="\t":    #caso seja um tab, incrementa coluna 3 vezes
+     if lista_de_caracteres:
+          letra = lista_de_caracteres.pop() #retira letra da lista
+          while letra =="\n":    #caso seja uma quebra de linha, incrementa linha
+               linha=incLinha_Coluna(1)
+               letra = lista_de_caracteres.pop()
+          while letra =="\t":    #caso seja um tab, incrementa coluna 3 vezes
+               incLinha_Coluna(0)
+               incLinha_Coluna(0)
+               incLinha_Coluna(0)
+               letra = lista_de_caracteres.pop()
           incLinha_Coluna(0)
-          incLinha_Coluna(0)
-          incLinha_Coluna(0)
-          letra = lista_de_caracteres.pop()
-     incLinha_Coluna(0)
-     return letra
+          return letra
+     else: 
+          print "Acabou os tokens"
+          return
+     
      
 #------------= Q0 =-------------------------------------------   
 
@@ -295,7 +300,7 @@ def q18(letra):          #achou uma atribuição =:= , caso o proximo caracter s
 #---------------------------------------------------        
 def q19(letra):
      global palavra, flagVariavel, aux
-     palavra += letra  #concatena primeiro caracter
+     palavra += letra  #concatena segundo caracter
      letra = proximaletra() #pega proximo caracter
      #print letra, "oii"
      if is_valido(letra):  #testa se é válido
@@ -305,7 +310,7 @@ def q19(letra):
                     letra = proximaletra()
                     if (not is_letra(letra) and not is_numero(letra)):
      	         	             
-                         print letra; q20(letra)  #vai para estado 20, onde deve aceitar o token e salva ultimo caracter
+                         q20(letra)  #vai para estado 20, onde deve aceitar o token e salva ultimo caracter
                          break
                     if letra != " ":  #nao concatena espaços
                          palavra += letra
@@ -379,15 +384,18 @@ def q21(letra):
 
 def le_token(): #funcao principal 
      global flagVariavel,letra
-     
-     if flagVariavel == True: #caso tenha achado uma variavel por ultimo, pega ultimo caracter lido
-          letra = aux.pop()
-          flagVariavel=False #seta flag false
-     else:
-          letra=proximaletra() #se nao, pega proximo caracter da lista referente aso caracteres do arquivo
+     if lista_de_caracteres:   
+          if flagVariavel == True: #caso tenha achado uma variavel por ultimo, pega ultimo caracter lido
+               letra = aux.pop()
+               flagVariavel=False #seta flag false
+          else:
+               letra=proximaletra() #se nao, pega proximo caracter da lista referente aso caracteres do arquivo
           
-     q0(letra)
-     return tokens.pop() #reorna token que foi armazenado nesta lista
+          q0(letra)
+          if tokens:
+               return tokens.pop() #reorna token que foi armazenado nesta lista
+     else:
+          return "Acabou os tokens! :/"
      
 #---------------------------------------------------    
 def getErrolexico():  #se houver um erro lexico...
