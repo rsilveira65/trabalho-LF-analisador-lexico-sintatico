@@ -6,32 +6,37 @@ Analisador Sintático
 '''
 from analisador_lexico import *
 
-def s(token):
+def s_linha(token):
 	print token
-	if token['nome']=='VIR':
-
+	if token['nome']=="+":
 		return 1
 	else:
-		if token['nome']=='IMP':
-			
-			token = le_token()
+		if token['nome']=="PRI":
 			print token
-			if B(token):
-				return 1
-			else:
-				return 0
-		else:
-			return 0
-			
-def B(token):
+			S(token)
+
+
+
+def S(token):
+	token = le_token()
 	print token
-	if token['nome']=="^":
-		B(token)
-	elif token['nome']=="EOF":
-		#print token
-		return 1
-	else:
-		return 0
+	if token['nome']=="PRI":
+		PRI(token)
+					
+def PRI(token):
+	token = le_token()
+	print token
+	FINAL(token)
+	if token['nome']=="PTV":
+		S(token)
+		
+def FINAL(token):
+	token = le_token()
+	print token
+	E1(token)
+	if token['nome']=="PTV":
+		S(token)
+		
 		
 		
 	

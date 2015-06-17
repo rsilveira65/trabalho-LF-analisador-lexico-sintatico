@@ -5,10 +5,10 @@ import string
 @author: Rafael Silveira rsilveira@inf.ufpel.edu.br
 Analisador Léxico
 '''
-tokens = []
+tokens = [] 
 lista_de_caracteres=[]
 
-alfabeto = ["z","a","_","A","b","B","a","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
+alfabeto = ["z","a","_","A","b","B","a","C","c","D","d","0","1","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
 numeros = ["z","0","1","2","3","4","5","6","7","8","9"]
 palavra=""
 letra=""
@@ -103,15 +103,13 @@ def showErro(letra):
 def proximaletra():
      global colunas, linhas
      letra = lista_de_caracteres.pop() #retira letra da lista
-     if letra =="\n":    #caso seja uma quebra de linha, incrementa linha
+     while letra =="\n":    #caso seja uma quebra de linha, incrementa linha
           linha=incLinha_Coluna(1)
           letra = lista_de_caracteres.pop()
-          print "!"
-     if letra =="\t":    #caso seja um tab, incrementa coluna 3 vezes
+     while letra =="\t":    #caso seja um tab, incrementa coluna 3 vezes
           incLinha_Coluna(0)
           incLinha_Coluna(0)
           incLinha_Coluna(0)
-          print "!!"
           letra = lista_de_caracteres.pop()
      incLinha_Coluna(0)
      return letra
@@ -122,7 +120,7 @@ def q0(letra):
      if is_valido(letra):
           while letra =="" or letra ==" ":  #enquanto for espaço, disconsidera e le proxima letra
                letra=proximaletra()  
-          if (is_letra(letra) or is_numero(letra)): #caso seja uma letra ou um numero vai para estado 19
+          if is_letra(letra): #caso seja uma letra vai para estado 19
                q19(letra)
           elif letra== "^":
                q1(letra)
@@ -301,7 +299,7 @@ def q19(letra):
      letra = proximaletra() #pega proximo caracter
      #print letra, "oii"
      if is_valido(letra):  #testa se é válido
-          if is_letra(letra) or is_numero(letra): #testa se é uma letra ou um numero
+          if (is_letra(letra) or is_numero(letra)): #testa se é uma letra ou um numero
                palavra += letra #concatena proxima letra
                while True:  #vai pegando proximas letras até achar um caracter que nao seja um numero ou uma letra
                     letra = proximaletra()
@@ -313,37 +311,33 @@ def q19(letra):
                          palavra += letra
                          #print palavra 
                          #print letra
-
-                    
-                        
-          else:   #caso seja valido e nao seja uma letra ou um numero, podera ser "V", "v", "1","0" 	
-               
-               if palavra=='V':
-                    tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
-               elif palavra=='v':
-                    tokens.append({'nome':'OR','linha':linhas, 'coluna':colunas})
-               elif palavra=='1':
-                    tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
-               elif palavra=='0':
-                    tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
-               else:
-                    tokens.append({'nome':'VAR','linha':linhas, 'coluna':colunas})
-                    #print palavra
-                    #print letra 
-               palavra=""
-               flagVariavel=True #seta flag de variavel e salva o caracter
-               aux.append(letra) #salva caracter na lista auxiliar
-               exit
-                         
-          
+         
+          else:   #caso seja valido e nao seja uma letra ou um "numero", podera ser "V", "v", "1","0"...	
+               q20(letra)                
      else:
           showErro(letra) #caso caracter nao seja válido, erro!
           
 #---------------------------------------------------              
 def q20(letra):
      global palavra, aux, flagVariavel
+     if palavra=='V':
+          tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
+          palavra=""
+          exit
+     elif palavra=='v':
+          tokens.append({'nome':'OR','linha':linhas, 'coluna':colunas})
+          palavra=""
+          exit
+     elif palavra=='1':
+          tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
+          palavra=""
+          exit
+     elif palavra=='0':
+          tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
+          palavra=""
+          exit
    
-     if "Read" == palavra:
+     elif "Read" == palavra:
           tokens.append({'nome':'REA','linha':linhas, 'coluna':colunas}) #caso a palavra concatenada seja "Read", adiciona a lista e zera a variavel palavra
           palavra=""
           exit
@@ -352,7 +346,7 @@ def q20(letra):
           palavra=""
           exit
      elif "true" == palavra:
-          tokens.append({'nome':'PR','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "false" == palavra:
