@@ -7,16 +7,17 @@ Analisador Sintático
 from analisador_lexico import *
 import sys 
 
-def s_linha(token):
-	print token
-	if token['nome']=="+":
-		return 1
-	else:
-		if token['nome']=="PRI":
-			print token
-			S(token)
+pilha=[]
 
+def s_linha(token):
+		pilha.append({'nome':'slinha', 'tipo':'variavel')
+		pilha.append({'nome':'fim', 'tipo':'fim')
+		S(token)
+			
 def S(token):
+	if token['nome']=="PRI" or token['nome']=="VAR" or  token['nome']=="IF" or  token['nome']=="REA":
+		print token
+		
 	token = le_token()
 	print token
 	if token['nome']=="PRI":
@@ -41,185 +42,12 @@ def FINAL(token):
 
 entrada = "TestFile/test3.txt"
 geraLista(entrada) 
+
+while getErrolexico() or token['nome']!="+":
+	token = le_token()
+	print token
+	s_linha(token)
 	
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-token = le_token()
-print token
-
-
-
-
-
-
-
-
-
-#print s(token)
 
 		
 
