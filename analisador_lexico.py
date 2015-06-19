@@ -362,7 +362,7 @@ def q20(letra):
           palavra=""
           exit
      elif "else" == palavra:
-          tokens.append({'nome':'ELSE','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'ELS','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
        
