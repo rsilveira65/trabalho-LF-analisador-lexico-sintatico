@@ -15,21 +15,62 @@ def s_linha(token):
 		S(token)
 			
 def S(token):
-	if token['nome']=="PRI" or token['nome']=="VAR" or  token['nome']=="IF" or  token['nome']=="REA":
-		print token
-		
-	token = le_token()
-	print token
+	
 	if token['nome']=="PRI":
-		PRI(token)
+		pilha.append({'nome':'s', 'tipo':'variavel')
+		pilha.append({'nome':token['nome'], 'tipo':'token')
+		PRI(token)  
+		#print token
+		
+	elif token['nome']== "IF":
+		pilha.append({'nome':'s', 'tipo':'variavel')
+		pilha.append({'nome':token['nome'], 'tipo':'token')
+		IF(token)  
+	
+	elif token['nome']== "REA":
+		pilha.append({'nome':'s', 'tipo':'variavel')
+		pilha.append({'nome':token['nome'], 'tipo':'token')
+		REA(token)  
+
+	elif token['nome']=="VAR":
+		pilha.append({'nome':'s', 'tipo':'variavel')
+		pilha.append({'nome':token['nome'], 'tipo':'token')
+		VAR(token)  
+				
+	else:
+		"errrrrou"
 					
 def PRI(token):
+	test = pilha.remove() 
+	while test['tipo'] == "token":
+		pilha.append({'nome':'s', 'tipo':'variavel')
+		pilha.append({'nome':token['nome'], 'tipo':'token')
+		pilha.append({'nome':'s', 'tipo':'variavel')
+		test = pilha.remove() 
+		
+		
+		
+def IF(token):
 	token = le_token()
 	print token
 	FINAL(token)
 	if token['nome']=="PTV":
 		S(token)
 		
+def VAR(token):
+	token = le_token()
+	print token
+	FINAL(token)
+	if token['nome']=="PTV":
+		S(token)
+
+def REA(token):
+	token = le_token()
+	print token
+	FINAL(token)
+	if token['nome']=="PTV":
+		S(token)
+				
 def FINAL(token):
 	token = le_token()
 	print token
