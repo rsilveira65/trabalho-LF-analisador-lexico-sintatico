@@ -1,4 +1,17 @@
-else if _s,
-Read  else; Read Prinst True False F rafaelaw; ca2ce4tew; q w F Pruint
-Read a';
-Print c;
+Read a,b,c;
+d =:= (b' v a) ^ ((b <-> c) v (c'' ^ a)')';
+if a ^ (b <-> c) {
+e =:= 1;
+f =:= 0;
+Print d ^ a;
+}
+else {
+	 if d {
+	 	e =:= 0;
+	 }
+	 else{
+	 	f =:= 1;
+	 }
+	 Print d v a;
+}
+Print e ^ f;
