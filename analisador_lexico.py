@@ -79,8 +79,8 @@ def geraLista(entrada):
 #-------------------------------------------------------          
          
 # mostra o erro e grava em um arquivo de log!                      
-def showErro(letra):
-     global fileb, linhas, erroLexico   	
+def showErro(letra,estado):
+     global fileb, linhas, erroLexico  	
      erroLexico = False
      
      fileb = open("log.txt", "w")
@@ -92,7 +92,8 @@ def showErro(letra):
      fileb.close()
    
      print "============================================"
-     print "ERRO LÉXICO: Caracter ["+letra+"] Inválido! "
+     print "ERRO LÉXICO: Caracter ["+letra+"] Inválido!"
+     print "Estado: ",estado
      print "Linha:",linhas
      print "Coluna:",colunas
      print "============================================"
@@ -151,9 +152,9 @@ def q0(letra):
           elif letra== "+": #caso seja um fim de arquivo, vai para estado 21
                q21(letra)
           else:
-               showErro(letra) #caso nenhuma das opções, mostra erro"
+               showErro(letra,"q0") #caso nenhuma das opções, mostra erro"
      else:
-          showErro(letra) #caso não seja um caracter válido, mostra erro
+          showErro(letra,"q0") #caso não seja um caracter válido, mostra erro
           
 #---------------------------------------------------    
 
@@ -177,9 +178,9 @@ def q3(letra):
           if letra == ">":
                q4(letra)
           else:
-               showErro(letra)
+               showErro(letra,"q3")
      else:
-          showErro(letra) 
+          showErro(letra,"q3") 
           
 #---------------------------------------------------    
           
@@ -190,7 +191,7 @@ def q4(letra):
           tokens.append({'nome':'IMP','linha':linhas, 'coluna':colunas})
           exit  
      else:
-          showErro(letra) 
+          showErro(letra,"q4")
 #---------------------------------------------------    
           
 def q5(letra):
@@ -219,9 +220,9 @@ def q9(letra):
           if letra == "-":
                q10(letra)
           else:
-               showErro(letra)
+               showErro(letra,"q9")
      else:
-          showErro(letra) 
+          showErro(letra,"q9")
           
 #---------------------------------------------------    
           
@@ -232,9 +233,9 @@ def q10(letra):
           if letra == ">":
                q11(letra)
           else:
-               showErro(letra)
+               showErro(letra,"q10")
      else:
-          showErro(letra) 
+          showErro(letra,"q10") 
           
 #---------------------------------------------------             
 
@@ -245,7 +246,7 @@ def q11(letra):
           tokens.append({'nome':'EQU','linha':linhas, 'coluna':colunas})
           exit  
      else:
-          showErro(letra)          
+          showErro(letra,"q11")          
 #---------------------------------------------------    
      
 def q12(letra):
@@ -271,9 +272,9 @@ def q16(letra):
           if letra == ":":
                q17(letra)
           else:
-               showErro(letra)
+               showErro(letra,"q16")
      else:
-          showErro(letra)    #caso nao seja um caracter válido, motra erro!
+          showErro(letra,"q16")    #caso nao seja um caracter válido, motra erro!
           
 #---------------------------------------------------              
 def q17(letra):
@@ -283,9 +284,9 @@ def q17(letra):
           if letra == "=":
                q18(letra)
           else:
-               showErro(letra)
+               showErro(letra,"q17")
      else:
-          showErro(letra) 
+          showErro(letra,"q17") 
 #---------------------------------------------------              
 def q18(letra):          #achou uma atribuição =:= , caso o proximo caracter seja valido, gera o token
      letra = proximaletra()
@@ -294,7 +295,7 @@ def q18(letra):          #achou uma atribuição =:= , caso o proximo caracter s
           tokens.append({'nome':'ATR','linha':linhas, 'coluna':colunas})
           exit  
      else:
-          showErro(letra)   #caso seja um caracter invalido, mostra erro!
+          showErro(letra,"q18")   #caso seja um caracter invalido, mostra erro!
 
 #---------------------------------------------------        
 def q19(letra):
@@ -319,7 +320,7 @@ def q19(letra):
           else:   #caso seja valido e nao seja uma letra ou um "numero", podera ser "V", "v", "1","0"...	
                q20(letra)                
      else:
-          showErro(letra) #caso caracter nao seja válido, erro!
+          showErro(letra,"q19") #caso caracter nao seja válido, erro!
           
 #---------------------------------------------------              
 def q20(letra):
