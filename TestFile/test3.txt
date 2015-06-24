@@ -1,1 +1,4 @@
-Print V ^ F -> true <-> false;
+Read a,a,a,a;
+
+
+

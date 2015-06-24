@@ -346,7 +346,7 @@ def q20(letra):
           palavra=""
           exit
      elif "Print" == palavra:          
-          tokens.append({'nome':'PR','linha':linhas, 'coluna':colunas})
+          tokens.append({'nome':'PRI','linha':linhas, 'coluna':colunas})
           palavra=""
           exit
      elif "true" == palavra:
