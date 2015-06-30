@@ -105,7 +105,7 @@ def E0_ast(token):
 	empilha({'nome':'VAR','tipo':'token'})
 	TOP = pilha.pop()
 	token = le_token()
-	if TOP['nome'] == token['nome']:
+	if cmp (TOP['nome'], token['nome']) == 0:
 		return True			
 	else:
 		return False
@@ -117,7 +117,7 @@ def EVIR(token):
 	empilha({'nome':'VAR','tipo':'token'})
 	TOP =  pilha.pop()
 	token = le_token()
-	if TOP['nome'] == token['nome']:
+	if cmp (TOP['nome'], token['nome']) == 0:
 		return True
 	else:
 		return False
@@ -135,11 +135,11 @@ def EVIR_ast(token):
 	TOP = pilha.pop()
 	token = le_token()
 		
-	if TOP['nome'] == token['nome']:
+	if cmp (TOP['nome'], token['nome']) == 0:
 		TOP = pilha.pop()
 		token = le_token()
 		
-		if TOP['nome'] == token['nome']:
+		if cmp (TOP['nome'], token['nome']) == 0:
 			return True
 		else: 
 			return False
@@ -165,7 +165,7 @@ def E1_ast(token):
 	empilha({'nome':'EQU','tipo':'token'})
 	TOP = pilha.pop()
 	token = le_token()
-	if TOP['nome'] == token['nome']:
+	if cmp (TOP['nome'], token['nome']) == 0:
 		return True
 	else: 
 		return False
@@ -183,12 +183,12 @@ def E2_linha(token):
 	
 def E2_ast(token):
 	print "token no E2_ast ",token['nome']
-	empilha({'nome':'E1_linha','tipo':'variavel'})
-	empilha({'nome':'E2','tipo':'variavel'})
+	empilha({'nome':'E2_linha','tipo':'variavel'})
+	empilha({'nome':'E3','tipo':'variavel'})
 	empilha({'nome':'IMP','tipo':'token'})
 	TOP = pilha.pop()
 	token = le_token()
-	if TOP['nome'] == token['nome']:
+	if cmp (TOP['nome'], token['nome']) == 0:
 		return True
 	else: 
 		return False
@@ -200,16 +200,21 @@ def E3(token):
 	# E4(token)	
 		
 def E3_linha(token):
+	global pilha
 	print "token no E3_linha",token['nome']
 	empilha({'nome':'E3','tipo':'variavel'})
 	token = le_token()
-	if token['nome'] == "AND" : 		
+	print "oii"
+	print token
+	if token['nome']=="AND": 	
+		print "oii2"	
+		empilha({'nome':'E3','tipo':'variavel'})
+		
+		return True
+	elif cmp (token['nome'],"OR")==0:
 		empilha({'nome':'E3','tipo':'variavel'})
 		return True
-	elif token['nome'] == "OR":
-		empilha({'nome':'E3','tipo':'variavel'})
-		return True
-	else :
+	else:
 		return False 
 			
 def E4(token): #REVISAR
@@ -221,7 +226,7 @@ def E4(token): #REVISAR
 		empilha({'nome':'E1','tipo':'variavel'})
 		empilha({'nome':'PAE','tipo':'token'})
 		TOP = pilha.pop()
-		if TOP['nome'] == token['nome']:
+		if cmp (TOP['nome'], token['nome']) == 0:
 			return True
 		else:
 			return False
@@ -241,7 +246,8 @@ def E4_ast(token):
 	empilha({'nome':'NOT','tipo':'token'})
 	TOP = pilha.pop()
 	token = le_token()
-	if TOP['nome'] == token['nome']:
+	#print token
+	if cmp (TOP['nome'], token['nome']) == 0:
 		return True
 	else: 
 		return False
@@ -255,7 +261,7 @@ def IF(token):
 		empilha({'nome':'CHE','tipo':'token'})
 		empilha({'nome':'E1','tipo':'variavel'})
 		empilha({'nome':'IF','tipo':'token'})
-	if TOP['nome'] == token['nome']:
+	if cmp (TOP['nome'], token['nome']) == 0:
 		E1(token)
 		# return True
 	else:
@@ -275,92 +281,101 @@ def ELSE(token):
 		return True
 		
 def FINAL(token):
+	global TOP, pilha
 	print "token no FINAL",token['nome']
-	# if token['nome']=="VAR":
-	# 	return True
-	# elif token['nome']=="FAL":
-	# 	return True
-	# elif token['nome']=="TRU":
-	# 	return True
-	# else:
-	# 	return False
-	TOP = pilha.pop() 
-	token = le_token()
-	if TOP['nome'] == token['nome']:
+	if token['nome']=="VAR":
+		return True
+	elif token['nome']=="FAL":
+		return True
+	elif token['nome']=="TRU":
 		return True
 	else:
 		return False
+	#TOP = pilha.pop()
+	#print pilha 
+	#print TOP
+	#token = le_token()
+	#if cmp (TOP['nome'], token['nome']) == 0:
+		#return True
+	#else:
+		#return False
 			
 	
-def precisodormir(token):
+def sintatico(token):
 	TOP = "entrada"
 	while TOP != "EOF" or token != "+":
-		if pilha:
+		print "aqui ",token
+		if pilha: #testa se a pilha n ta vazia
 			TOP = pilha.pop()
 			print pilha
-			if TOP == "EOF" and token == "+":
+			if TOP == "EOF" and token == "+": #teste se o topo da pilha é EOF e token "+"
 				return True
 			elif "token" == TOP['tipo']:
 				
 				if "variavel" == TOP['tipo']:
-					desempilha()
+					#TOP = pilha.pop()
 					token = le_token()
 				else:
 					print "erro :("
+			
 			else:
-				TOP = pilha.pop()
-				if TOP['nome'] == "S_linha":
-					S_linha(token)
-				elif TOP['nome'] == "S":
-					S(token) 	
-				
-				elif TOP['nome'] == "E0":
-					E0(token) 	
+				if pilha:
+					empilha(TOP)
+					print pilha
+					TOP = pilha.pop()
+					print pilha
+					if cmp (TOP['nome'], "S_linha") == 0:
+						S_linha(token)
+					elif cmp (TOP['nome'], "S") == 0:
+						S(token) 	
 					
-				elif TOP['nome'] == "E0_linha":
-					(token) 	
-					
-				elif TOP['nome'] == "E0_ast":
-					E0_ast(token) 	
-					
-				elif TOP['nome'] == "E1":
-					E1(token) 	
-					
-				elif TOP['nome'] == "E1_linha":
-					E1_linha(token) 	
-					
-				elif TOP['nome'] == "E1_ast":
-					E1_ast(token) 	
-					
-				elif TOP['nome'] == "E2":
-					E2(token) 	
-					
-				elif TOP['nome'] == "E2_linha":
-					E2_linha(token) 	
-					
-				elif TOP['nome'] == "E2_ast":
-					E2_ast(token) 	
-					
-				elif TOP['nome'] == "E3":
-					E3(token) 	
-					
-				elif TOP['nome'] == "E3_linha":
-					E3_linha(token) 	
-					
-				elif TOP['nome'] == "E4":
-					E4(token) 	
-					
-				elif TOP['nome'] == "E4_linha":
-					E4_linha(token) 	
-					
-				elif TOP['nome'] == "E4_ast":
-					E4_ast(token) 	
-					
-				elif TOP['nome'] == "IF":
-					IF(token) 	
-					
-				elif TOP['nome'] == "FINAL":
-					FINAL(token) 	
+					elif cmp (TOP['nome'], "E0") == 0:
+						E0(token) 	
+						
+					elif cmp (TOP['nome'], "E0_linha") == 0:
+						(token) 	
+						
+					elif cmp (TOP['nome'], "E0_ast") == 0:
+						E0_ast(token) 	
+						
+					elif cmp (TOP['nome'], "E1") == 0:
+						E1(token) 	
+						
+					elif cmp (TOP['nome'], "E1_linha") == 0:
+						E1_linha(token) 	
+						
+					elif cmp (TOP['nome'], "E1_ast") == 0:
+						E1_ast(token) 	
+						
+					elif cmp (TOP['nome'], "E2") == 0:
+						E2(token) 	
+						
+					elif cmp (TOP['nome'], "E2_linha") == 0:
+						E2_linha(token) 	
+						
+					elif cmp (TOP['nome'], "E2_ast") == 0:
+						E2_ast(token) 	
+						
+					elif cmp (TOP['nome'], "E3") == 0:
+						E3(token) 	
+						
+					elif cmp (TOP['nome'], "E3_linha") == 0:
+						E3_linha(token) 	
+						
+					elif cmp (TOP['nome'], "E4") == 0:
+						E4(token) 	
+						
+					elif cmp (TOP['nome'], "E4_linha") == 0:
+						E4_linha(token) 	
+						
+					elif cmp (TOP['nome'], "E4_ast") == 0:
+						E4_ast(token) 	
+						
+					elif cmp (TOP['nome'], "IF") == 0:
+						IF(token) 	
+						
+					elif cmp (TOP['nome'], "FINAL") == 0:
+						FINAL(token) 	
 		else:
 			return False
 	return True
@@ -373,19 +388,5 @@ geraLista(entrada)
 token = le_token()
 empilha({'nome':'EOF','tipo':'token'})
 empilha({'nome':'S_linha','tipo':'variavel'})
-print precisodormir(token)
-
-
-				
-			
-				
-			
-	 	
-
-		
-
-		
-
-
-
-	
+print pilha
+print sintatico(token)
