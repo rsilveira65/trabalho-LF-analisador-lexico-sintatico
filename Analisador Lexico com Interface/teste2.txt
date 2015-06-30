@@ -1,0 +1,6 @@
+Print a;
+if (a){
+    Read aux
+}else{
+Read  3;
+}

@@ -1,0 +1,90 @@
+Comunicacao em banda base:
+Na comunicacao em banda base, sinais são transmitidos 
+diretamente sem qualquer modificacao.
+
+DSB-SC:
+Modulacao: m(t) é multiplicado pelo sinal da portadora Acos(wt) e esse sinal no dominio das frequencias cria dois espectros
+de centralizados em -fc e +fc com 2BHz (2x a banda original de m(t)). para evitar a sobreposicao fc >= B. 
+Se fc <B as duas cópias do espectro de m(t) se sobreporiam e inviabilizariam a demodulacao do sinal.
+Para evitar distorcao devemos ter fc/b >>1. em AM B=5KHz e frequencias portadoras entre 550 e 1600kHz.
+
+Demodulacao: multiplicar sinal recebido m(t)cos(wct) por uma portadora cos(wct) e aplicar o resultado a um
+filtro passa-baixa. para tirar o 1/2 da saida, podemos multiplicar por uma portadora 2cos(wct). 
+(demodulação coerente ou sincrona).
+____________________________________________________________________
+MODULADORES: 
+Multiplicadores: usa multiplicador analogico, pode ser obtido a partir de um amplificador de ganho variavel
+em que o parametro de ganho e controlado por um dos sinais.
+
+Moduladores não lineares: diodo ou transistor semicondutor.
+
+Moduladores Chaveados: A multiplicacao e substituida por uma operação de chaveamento mais simples, se nos dermos conta
+de que um sinal modulado pode ser obtido multiplicando m(t) não apenas por uma senoide pura, mas também por
+qualquer sinal periodico da frequencia angular fundamental wc. 
+
+DEMODULADORES:
+Multiplica-se o sinal pelo da portadora gerada localmente em fase e sincronismo com a portadora recebida.
+entao é aplicado um filtro passa-baixas. todos os moduladores, menos o multiplicador, podem ser demoduladores apenas
+trocando o filtro passa faixa por um passa baixa de largura de banda B.
+____________________________________________________________________
+MODULAÇÂO EM AMPLITUDE AM:
+é enviada a portadora junto Acos(wct) + m(t)cos(wct), [A+m(t)]cos(wct) porem gasta uma maior potencia para transmissao. 
+espectro 1/2[M(f+fc) + M(f-fc)] + A/2[imp(f+fc) + imp(f-fc). A + m(t) >0 para todo t deve ser sempre positivo.
+para poder fazer demodulacao pelo envelope.
+para a deteccao de envelope fc >> largura de banda de m(t).
+
+indice de modulacao: u= mp/A, onde  0 =< u =<1. O detector envelope e mais simples e barato que o sincrono e pode 
+ser usado apenas para u<=1.
+
+POTENCIA DA BANDA LATERAL E DA PORTADORA: a potencia da portadora e disperdiçada pois nao carrega nenhuma msg.
+Pc = A^2/2 e Ps = 1/2 (m^2(t)). n= (u^2/2+u^2)*100% onde n é igual a potencia da banda lateral m(t).
+
+DEMODULAÇAO AM:
+Detector retificador: o sinal am é aplicado a um circuito constituido de um diodo e um resistor, para remover
+a parte negativa da onda. logo depois é multiplicado por w(t). apos e aplicado um filtro passa-baixa par suprimir
+freq maiores que BHz. o termo A/pi pode der boqueado por um capacitor.
+A retificação e uma demodulacao sincrona realizada com o uso de um oscilador local.
+diodo em paralelo com um resistor, um filtro passa-baixas e um capacitor em paralelto com um resistor.
+
+Detector envelope: durante o ciclo positivo, o capacitor se carrega até a tensao de pico do sinal de entrada
+e entao, se descarrega lentamente ate o próximo ciclo positivo. Assim, a tensao de saica Vc(t) segue o envelope do
+sinal AM de entrada. a saida do detector é vc(t) A + m(t). O termo A pode ser bloqueado por um capacitor ou filtro
+passa altas RC.
+____________________________________________________________________
+MODULACOES AM COM EFICIENCIA DE LARGURA DE BANDA:
+tanto LSB quanto USB tem informacao completa do sinal banda base m(t). portanto DSB requer o dobro da largura
+de banda.
+
+SSB: é suprimia do sinal DSB via filtro passa-faixa, eliminando USB ou LSB. a demodulacao e a mesma sincrona.
+
+MODULACAO SSB:
+deslocamento de fase, filtragem seletiva e metodo de weavwer. nenhum dos metodos de modulacao e preciso e todos requerem 
+que o sinal banda base tenha baixa potencia nas proximidades da origem.
+
+Metodo de deslocamento de fase: um deslocador de fase que atrasa a fase de cada componente espetral positiva.
+usa transformador de Hilbert.
+
+Metodo de filtragem seletiva: o mais usado, um sinal DSB-SC é passado por um filtro de corte abrupto para eliminar
+a banda lateral indesejada. para obtencao de USB, o filtro deve deixar passar sem atenuacao todas componentes acima
+de fc e deve suprimir todas abaixo. uma operacao exige um filtro ideal, que e impossivel. o sinal de voz satisdaz
+pois componentes abaixo de 300Hz nao sao importantes e acima de 3500Hz. entao pode-se suprimir todas essas componentes.
+
+Em AM a detectção envelope exige A >= m(t) enquanto em SSB+C a condição é A>>mt. portanto no caso SSB a necessaria
+amplitude da portadora é muito maior que em AM e consequentemente, a eficiencia de SSB+c é praticamente baixa.
+____________________________________________________________________
+MODULAÇÃO QAM:
+transmissão de dois sinais DSB com portadoras de mesma frequência, mas em quadratuda de fase. Os dois sinais modulados 
+ocupam a mesma banda. No entanto, os dois sinais em banda base podem ser separados no receptor por detecção sincrona,
+caso as duas portadoras locais estejam em quadratura de fase. usado na transmissao de tv.
+____________________________________________________________________
+VSB:
+herda as vantagens de DSB e SSB mas evita suas desvantagens, a um pequeno custo. a geração do sinal é simples
+e ao mesmo tempo a largura de banda é apenas um pocuo maior, 25% que os sinais SSB.
+Em vez de rejeitar uma banda lateral completamente, um corte gradual de uma banda lateral é aceitavel.
+O sinal pode ser detectado por um filtro equalizador apropriado. caso uma portadora mais intensa seja transmitida
+podera ser demodulado por envelope.
+O filtro VSB H(f) permite a transmissao de uma banda lateral e suprime a outra, mas nao completamente (de forma gradual)
+25 a 33% maior que a SSB.
+
+Demodulacao: VSB+C pode ser usado envelope. VSB é adicionado um filtro passa baixas especial Ho(F).
+multiplicado por 2coswc. A portadora de VSB+C e mais intensa que em AM maas menos intensa que SSB+C
