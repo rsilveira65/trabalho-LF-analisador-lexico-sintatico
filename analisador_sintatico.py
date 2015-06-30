@@ -125,174 +125,135 @@ def VAR(token):
 		
 def E0(token):
 	print "token no E0 ",token['nome']
+	empilha({'nome':'E0_linha','tipo':'variavel'})
 	if E1(token):
-		token = le_token()
-		empilha({'nome':'E0_linha','tipo':'variavel'})
-		if E0_linha(token):
-			return True
-		else:
-			return False
+		return True
 	else:
 		return False
 		
 		
 def E0_linha(token):
 	print "token no E0_linha ",token['nome']
-	if token['nome']=="VIR":
-		token = le_token()
-		empilha({'nome':'E0_linha','tipo':'variavel'})
-		if E1(token):
-			token = le_token()
-			if E0_linha(token):
-				return True
-			else:
-				return False
+	E0_ast(token)
+		
+def E0_ast(token):
+	print "token no E0_ast ",token['nome']
+	empilha({'nome':'E0_linha','tipo':'variavel'})
+	empilha({'nome':'E1','tipo':'variavel'})
+	empilha({'nome':'VAR','tipo':'token'})
+	TOP = pilha.pop()
+	token = le_token()
+		if TOP['nome'] == token['nome']:
+			return True
+			
 		else:
 			return False
-	else:
-		return False #VAZIO!
+	
 		
 def EVIR(token):
 	print "token no EVIR ",token['nome']
-	if token['nome']=="VAR":
-		token = le_token()
-		if EVIR_linha(token):
+	empilha({'nome':'EVIR_linha','tipo':'variavel'})
+	empilha({'nome':'VIR','tipo':'token'})
+	TOP =  pilha.pop()
+	token = le_token()
+		if TOP['nome'] == token['nome']:
 			return True
 		else:
 			return False
-	else:
-		return False
-		
+	 
 def EVIR_linha(token):
 	print "token no EVIR_linha ",token['nome']
-	if token['nome']=="VIR":
-		token= le_token()
-		if token['nome']=="VAR":
-			token= le_token()
-			if EVIR_linha(token):
-				return True
-			else:
-				return False
-		else:
-			return False
-	else:
-		return False #VAZIO
-
-def E1(token):
-	print "token no E1 ",token['nome']
-	if E2(token):
-		token = le_token()
-		empilha({'nome':'E1_linha','tipo':'variavel'})
-		if E1_linha(token):
-			return True
-		else:
-			return False			
-	else:
-		return False
+	EVIR_ast(token)
+	
+def EVIR_ast(token):
+	
+	print "token no EVIR_ast ",token['nome']
+	empilha({'nome':'EVIR_linha','tipo':'variavel'})
+	empilha({'nome':'VAR','tipo':'token'})
+	empilha({'nome':'VIR','tipo':'token'})
+	TOP = pilha.pop()
+	token = le_token()
 		
-
-def E1_linha(token):
-	print "token no E1_linha ",token['nome']
-	if token['nome']=="EQU":
-		token = le_token()
-		empilha({'nome':'E1_linha','tipo':'variavel'})
-		if E2(token):
+		if TOP['nome'] == token['nome']:
+			TOP = pilha.pop()
 			token = le_token()
-			if E1_linha(token):
-				token = le_token
+			
+			if TOP['nome'] == token['nome']:
+				return True
 			else: 
 				return False
 		else:
 			return False
-	else:
-		return False #VAZIO
+					
+def E1(token):
+	print "token no E1 ",token['nome']
+	empilha({'nome':'E1_linha','tipo':'variavel'})
+	E2(token)	
+		
+		
+def E1_linha(token):
+	print "token no E1_linha ",token['nome']
+	
+	E1_ast(token)
+	
+def E1_ast(token):
+	print "token no E1_ast ",token['nome']
+	
+	empilha({'nome':'E1_linha','tipo':'variavel'})
+	empilha({'nome':'E2','tipo':'variavel'})
+	empilha({'nome':'EQU','tipo':'token'})
+	TOP = pilha.pop()
+	token = le_token()
+		if TOP['nome'] == token['nome']:
+			return True
+		else: 
+			return False
 	
 def E2(token):
 	print "token no E2 ",token['nome']
-	if E3(token):
-		token = le_token()
-		empilha({'nome':'E2_linha','tipo':'variavel'})
-		if E2_linha(token):
-			return True
-		else:
-			return False
-	else:
-		return False
+	empilha({'nome':'E2_linha','tipo':'variavel'})
+	E3(token)
+	
 		
 def E2_linha(token):
 	print "token no E2_linha ",token['nome']
-	if token['nome']=="IMP":
-		token = le_token()
-		empilha({'nome':'E2_linha','tipo':'variavel'})
-		if E3(token):
-			token = le_token()
-			if E2_linha():
-				return True
-			else:
-				return False
-		else:
+	E2_ast(token)
+	
+def E2_ast(token):
+	print "token no E2_ast ",token['nome']
+	empilha({'nome':'E1_linha','tipo':'variavel'})
+	empilha({'nome':'E2','tipo':'variavel'})
+	empilha({'nome':'IMP','tipo':'token'})
+	TOP = pilha.pop()
+	token = le_token()
+		if TOP['nome'] == token['nome']:
+			return True
+		else: 
 			return False
-	else:
-		return False #vazio
 		
 def E3(token):
 	print "token no E3",token['nome']
-	if E4(token):
-		token = le_token()
-		empilha({'nome':'E3_linha','tipo':'variavel'})
-		if E3_linha(token):
-			return True
-		else:
-			return False		
-	else:
-		return False
-		
+	empilha({'nome':'E3_linha','tipo':'variavel'})
+	E4(token)	
 		
 def E3_linha(token):
 	print "token no E3_linha",token['nome']
-	if token['nome']=="AND":
-		token = le_token()
-		if E3(token):
-			return True
-		else: 
-			return False
-				
-	elif token['nome']=="OR":
-		token = le_token()
-		if E3(token):
-			return True
-		else: 
+	empilha({'nome':'E3','tipo':'variavel'})
+	token = le_token()
+		if (token['nome'] == "AND") or (token['nome'] == "OR"): 		
+			TOP = pilha.pop()
+			token = le_token()
+			E3(token)
+		else :
 			return False 
-	else:
-		return False #VAZIOOOO
-
 def E4(token):
 	print "token no E4",token['nome']
-	if FINAL(token):
-		token = le_token()
+	empilha({'nome':'E3_linha','tipo':'variavel'})
+	if (token['nome'] == "PAE"):
 		empilha({'nome':'E4_linha','tipo':'variavel'})
-		if E4_linha(token):
-			return True
-		else:
-			return False		
-	
-	elif token['nome']=="PAE":
-		token = le_token()
-		if E1(token):
-			token = le_token()
-			if token['nome']=="PAD":
-				token = le_token()
-				if E4_linha(token):
-					return True
-				else:
-					return False	
-			else:
-				return False		
-		else:
-			return False	
-	else:
-		return False
-		
+		empilha({'nome':'PAD','tipo':'token'})
+		empilha({'nome':'E1','tipo':'variavel'})
+			
 		
 def E4_linha(token):
 	print "token no E4_linha",token['nome']
@@ -384,41 +345,45 @@ def FINAL(token):
 		return False
 		
 def precisodormir(token):
+	TOP = "entrada"
 	while TOP != "EOF" or token != "+":
-		TOP = desempilha()
-		if TOP == "EOF" and token == "+":
-			return True
-		elif "token" == TOP['tipo']:
-			
-			if "variavel" == TOP['tipo']:
-				desempilha()
-				token = le_token()
-			else:
-				print "erro :("
-		else:
-			print S_linha(token)
-			aux = desempilha()
-			if aux['tipo']== "variavel":
-				if aux["nome"] == "E0_linha":
-					token = le_token;
-					E0_linha(token)
-					
-				elif aux["nome"] == "E1_linha":
-					token = le_token;
-					E1_linha(token)
-					
-				elif aux["nome"] == "E2_linha":
-					token = le_token;
-					E2_linha(token)
-					
-				elif aux["nome"] == "E3_linha":
-					token = le_token;
-					E3_linha(token)
+		print pilha
+		if pilha:
+			TOP = pilha.pop()
+			if TOP == "EOF" and token == "+":
+				return True
+			elif "token" == TOP['tipo']:
+				
+				if "variavel" == TOP['tipo']:
+					desempilha()
+					token = le_token()
 				else:
-					print "..."
+					print "erro :("
 			else:
-				print "..."	
-		
+				print S_linha(token)
+				aux = desempilha()
+				if aux['tipo']== "variavel":
+					if aux["nome"] == "E0_linha":
+						token = le_token;
+						E0_linha(token)
+						
+					elif aux["nome"] == "E1_linha":
+						token = le_token;
+						E1_linha(token)
+						
+					elif aux["nome"] == "E2_linha":
+						token = le_token;
+						E2_linha(token)
+						
+					elif aux["nome"] == "E3_linha":
+						token = le_token;
+						E3_linha(token)
+					else:
+						print "..."
+				else:
+					print "..."	
+		else:
+			return False
 #parametro = sys.argv[1:]
 
 entrada = "TestFile/test3.txt"
