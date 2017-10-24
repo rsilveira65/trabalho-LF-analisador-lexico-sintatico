@@ -1,0 +1,8 @@
+if (d) 
+	{ 
+		Print d ^ a; 
+				
+				}
+else { 
+		Print d ^ c; 
+						}

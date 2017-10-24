@@ -1,0 +1,2 @@
+Print a;
+Read a,b;

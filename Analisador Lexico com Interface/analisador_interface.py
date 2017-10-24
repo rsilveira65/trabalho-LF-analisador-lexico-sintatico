@@ -1,39 +1,49 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import string
+import Tkinter as tk
+from Tkinter import *
+import tkMessageBox
+import Tkinter
+import urllib
+import base64
+from tkFileDialog   import askopenfilename
+
+
 '''
-@author: Rafael Silveira  rsilveira@inf.ufpel.edu.br
+@author: Rafael Silveira rsilveira@inf.ufpel.edu.br
 Analisador Léxico
 '''
-tokens = [] 
+tokens = []
 lista_de_caracteres=[]
 
-alfabeto = ["z","a","_","A","b","B","a","C","c","D","d","0","1","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
+alfabeto = ["z","1","a","_","A","b","B","a","C","c","D","d","0","1","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","V","X","Y","y","x","W","w","Z","z"]
 numeros = ["z","0","1","2","3","4","5","6","7","8","9"]
 palavra=""
 letra=""
 aux=[]
+lista_token=[]
 #Conjunto de todos simbolos validos
-valido =["z","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","+","=","w"]
+valido =["\b","_"," ","","0","F","V","1","2","3","4","5","6","7","8","9","a","^","'","a","A","b","B","C","c","D","d","E","e","F","f","G","g","H","h","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","Q","q","R","r","S","s","T","t","U","u","v","X","Y","y","x","W","w","Z","z",",","'","-",";",":","(",")","{","}",""," ","-","\t","\r","\b","R","P","T"," F ","<",">","+","=","w"]
 linhas =1 #variavel para contagem de linhas
 colunas =1 #variavel para contagem de colunas
-erroLexico = True  #flag para erro lexico.
+erroLexico = False  #flag para erro lexico.
 flagVariavel = False #flag para quando nao ler proximo caracter.
 
-
-# Função incrementalinha, sempre que chamanda, incrementa a linha ou coluna e retorna esses valores 
+# Função incrementalinha, sempre que chamanda, incrementa a linha ou coluna e retorna esses valores
 
 def incLinha_Coluna(x):
-          global linhas, colunas
+          global linhas
+          global colunas
           if x == 0:
                     colunas+=1
                     return colunas
           elif x == 1:
                     linhas+=1
-                    colunas=1
+                    colunas=0
                     return linhas
-#-------------------------------------------------------               
+#-------------------------------------------------------
+
 # Função is_numero e is_letra, busca a letra passada pelo parametro e retorna se está contida ou não nas listas alfabeto e numero
 
 def is_numero(letra):    #retorna verdadeiro caso for um numero, caso contrário retorna falso
@@ -62,26 +72,12 @@ def is_valido(letra):  #retorna verdadeiro caso for um caracter valido no progra
                return False
 
                 
-#------------------------------------------------------- 
-# abre o arquivo de entrada e carrega todos caracteres dentro do arquivo de entrada .txt para a lista: "lista_de_caracteres".
-def geraLista(entrada):
-     global lista_de_caracteres
-     arquivo = open(entrada)
-     while True:
-          conteudo_texto = arquivo.read(1)
-          if conteudo_texto == '':
-               lista_de_caracteres.append("+")   #caso ache o fim do arquivo, adiciona o simbolo "+"
-               lista_de_caracteres.reverse()
-               #print "Caracteres carregados com sucesso!: ",lista_de_caracteres
-               break 
-          lista_de_caracteres.append(conteudo_texto)
-                         
 #-------------------------------------------------------          
-         
+
 # mostra o erro e grava em um arquivo de log!                      
 def showErro(letra,estado):
      global fileb, linhas, erroLexico  	
-     erroLexico = False
+     erroLexico = True
      
      fileb = open("log.txt", "w")   
      fileb.write( "============================================\n")
@@ -99,34 +95,33 @@ def showErro(letra,estado):
      print "Coluna:",colunas
      print "============================================"
      
-#-------------------------------------------------------               
-# funcao que le o proximo caracter da lista de caracteres
+#-------------------------------------------------------   
+
 def proximaletra():
      global colunas, linhas
-     if lista_de_caracteres: 
+     if lista_de_caracteres:
           letra = lista_de_caracteres.pop() #retira letra da lista
           while letra =="\n":    #caso seja uma quebra de linha, incrementa linha
                linha=incLinha_Coluna(1)
                letra = lista_de_caracteres.pop()
-          while letra =="\t":    #caso seja uma tabulação, incrementa coluna 3 vezes
+          while letra =="\t":    #caso seja uma tabulacao, incrementa coluna 3 vezes
                incLinha_Coluna(0)
                incLinha_Coluna(0)
                incLinha_Coluna(0)
                letra = lista_de_caracteres.pop()
           incLinha_Coluna(0)
           return letra
-     else: 
+     else:
           print "Acabou os caracteres"
           return
-     
-     
-#------------= Q0 =-------------------------------------------   
+
+#------------= Q0 =-------------------------------------------
 
 def q0(letra):
      if is_valido(letra):
           while letra =="" or letra ==" ":  #enquanto for espaço, disconsidera e le proxima letra
-               letra=proximaletra()  
-          if is_letra(letra): #caso seja uma letra  {a,b,c,...z} U {_} U {0,1} vai para estado 19 
+               letra=proximaletra()
+          if is_letra(letra):  #caso seja uma letra  {a,b,c,...z} U {_} U {0,1} vai para estado 19 
                q19(letra)
           elif letra== "^":
                q1(letra)
@@ -156,7 +151,8 @@ def q0(letra):
                showErro(letra,"q0") #caso nenhuma das opções, mostra erro"
      else:
           showErro(letra,"q0") #caso não seja um caracter válido, mostra erro
-          
+
+
 #------- Q1 [ ˆ ]--------------------------------------------    
 
 def q1(letra):
@@ -183,6 +179,7 @@ def q3(letra):
      else:
           showErro(letra,"q3") 
           
+
 #------- Q4 [ -> ]--------------------------------------------    
           
 def q4(letra):
@@ -214,7 +211,6 @@ def q7(letra):
      #print "q7:"+letra
      tokens.append({'nome':'CHE','linha':linhas, 'coluna':colunas})
      exit 
-     
 #------- Q9 [ <-> ] --------------------------------------------    
     
 def q9(letra):
@@ -251,7 +247,6 @@ def q11(letra):
           exit  
      else:
           showErro(letra,"q11")  
-                  
 #------- Q12 [ , ] --------------------------------------------    
      
 def q12(letra):
@@ -308,7 +303,7 @@ def q18(letra):          #achou uma atribuição =:= , caso o proximo caracter s
           showErro(letra,"q18")   #caso seja um caracter invalido, mostra erro!
 
 #------- Q19 [ ] --------------------------------------------    
-     
+
 def q19(letra):
      global palavra, aux
      palavra += letra  #concatena caracter
@@ -333,49 +328,70 @@ def q19(letra):
      else:
           showErro(letra,"q19") #caso caracter nao seja válido, erro!
           
-#---------------------------------------------------              
+#---------------------------------------------------   
+
 def q20(letra):
      global palavra, aux, flagVariavel
      if palavra=='V':
           tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
           palavra=""
+	  aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif palavra=='v':
           tokens.append({'nome':'OR','linha':linhas, 'coluna':colunas})
           palavra=""
+          aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif palavra=='1':
           tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
           palavra=""
+	  aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif palavra=='0':
           tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
           palavra=""
+	  aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
    
      elif "Read" == palavra:
           tokens.append({'nome':'REA','linha':linhas, 'coluna':colunas}) #caso a palavra concatenada seja "Read", adiciona a lista e zera a variavel palavra
           palavra=""
+          aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif "Print" == palavra:          
           tokens.append({'nome':'PRI','linha':linhas, 'coluna':colunas})
           palavra=""
+          aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif "true" == palavra:
           tokens.append({'nome':'TRU','linha':linhas, 'coluna':colunas})
           palavra=""
+          aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif "false" == palavra:
           tokens.append({'nome':'FAL','linha':linhas, 'coluna':colunas})
           palavra=""
+ 	  aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif "if" == palavra:
           tokens.append({'nome':'IF','linha':linhas, 'coluna':colunas})
           palavra=""
+	  aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
      elif "else" == palavra:
           tokens.append({'nome':'ELS','linha':linhas, 'coluna':colunas})
           palavra=""
+	  aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
+          flagVariavel = True
           exit
        
      else:
@@ -384,18 +400,27 @@ def q20(letra):
           aux.append(letra) #salva ultimo caracter e seta flag true, para que possa ser avaliado na proxima vez.
           flagVariavel = True
           exit
-#---------------------------------------------------              
+#---------------------------------------------------
 def q21(letra):
      tokens.append({'nome':'+','linha':linhas, 'coluna':colunas})  #final de arquivo
-     exit     
- #---------------------------------------------------     
+     exit
+
+#---------------------------------------------------     
 # q0 -> q19 -> q20, onde são concatenados os caracteres até algum caracter diferente de letra e numero,
  # por isso foi setada a flagVariavel e salvo esse caracter (diferente de letra e numero), para que na proxima chamada de le_token() nao seja perdido esse caracter.                      
 #---------------------------------------------------    
+     
+def getErrolexico():  #se houver um erro lexico...
+     return erroLexico
 
-def le_token(): #funcao principal 
+def showTokens(lista_token):
+     print "Lista de Tokens:", lista_token
+
+
+
+def le_token(): #funcao principal
      global flagVariavel,letra
-     if lista_de_caracteres or aux:   
+     if lista_de_caracteres or aux:
 
           if flagVariavel == True: #caso tenha achado uma variavel por ultimo, pega ultimo caracter lido
                letra = aux.pop()
@@ -407,20 +432,160 @@ def le_token(): #funcao principal
                return tokens.pop() #reorna token que foi armazenado nesta lista
      else:
           return "Acabou os tokens! :/"
-     
-#---------------------------------------------------    
-def getErrolexico():  #se houver um erro lexico...
+
+def getErrolexico():
      return erroLexico
-#---------------------------------------------------    
 
-def getColunaLinha(x):
-     global linhas, colunas
-     if x == 0:
-          return colunas
-     else:
-          return linhas
-   
- 
 
- 
+
+#--------------------------INTERFACE ---------------------------------------
+def abrirarquivo():
+    global arquivo2
+    name= askopenfilename(filetypes=[("Text files","*.txt")])
+    print name.encode('utf-8')
+    arquivo2=name
+    janelaabre()
+
+def sobre():
+    root = Tk()
+    S = Scrollbar(root)
+    T = Text(root, height=20, width=50)
+    S.pack(side=RIGHT, fill=Y)
+    T.pack(side=LEFT, fill=Y)
+    S.config(command=T.yview)
+    T.config(yscrollcommand=S.set)
+    quote = "Trabalho de Linguagens Formais!"
+    T.insert(END, quote)
+    root.title('Sobre')
+
+def janelaabre():
+    global arquivo
+    arquivo = open(arquivo2)
+    conteudo_texto = arquivo.read()
+    root = Tk()
+    S = Scrollbar(root)
+    T = Text(root, height=30, width=50) #,bg='black',fg='white'
+    S.pack(side=RIGHT, fill=Y)
+    T.pack(side=LEFT, fill=Y)
+    S.config(command=T.yview)
+    T.config(yscrollcommand=S.set)
+    quote = conteudo_texto
+    T.insert(END, quote)
+    root.title('Codigo Entrada')
+    mainloop()
+
+def AskYesNo(title='Tudo certo!', message='Sucesso!! Deseja ver tokens?'):
+        return tkMessageBox.askyesno( title, message )
+
+def analisador():
+    global arquivo
+    global erroLexico
+    global arquivo2
+    global lista_token
+    global token
+    global linhas, colunas
+
+    arquivo = open(arquivo2)
+    erroLexico = False
+
+    while True:
+        conteudo_texto = arquivo.read(1)
+
+        lista_de_caracteres.append(conteudo_texto)
+        if conteudo_texto == '':
+            lista_de_caracteres.append("+")
+            lista_de_caracteres.reverse()
+           
+            break
+
+    while erroLexico==False:
+
+          token_salvar = le_token()
+          if erroLexico==True:
+               break
+          lista_token.append(token_salvar['nome'])
+          if token_salvar['nome'] == "+":
+               showTokens(lista_token)
+               break
+
+    if erroLexico==False:
+
+          texto = "TUDO CERTO!!"
+          if AskYesNo()==True:
+               root = Tk()
+               S = Scrollbar(root)
+               T = Text(root, height=30, width=50)
+               S.pack(side=RIGHT, fill=Y)
+               T.pack(side=LEFT, fill=Y)
+               S.config(command=T.yview)
+               T.config(yscrollcommand=S.set)
+
+               T.insert(END, lista_token)
+               while len(lista_token) > 0 : lista_token.pop()
+               while len( lista_de_caracteres) > 0 :  lista_de_caracteres.pop()
+               linhas =1
+               colunas =1
+               root.title('Tokens')
+               mainloop()
+    else:
+         arquivo = open("log.txt")
+         texto = arquivo.read()
+         tkMessageBox.showerror("Erro Lexico",texto)
+         while len(lista_token) > 0 : lista_token.pop()
+         while len( lista_de_caracteres) > 0 :  lista_de_caracteres.pop()
+         linhas =1
+         colunas =1
+         
+
+
+
+def janela(toplevel):
+        Label(text='ANALISADOR LEXICO',font=('Verdana','15','bold')).pack(side=TOP,padx=10,pady=10)
+
+        
+
+        fr1 = Frame(toplevel)
+        fr1.pack()
+        icone1 = PhotoImage(file='icones/abrir.png')
+        icone2= PhotoImage(file='icones/analisar.png')
+        icone3= PhotoImage(file='icones/sobre.png')
+        icone4= PhotoImage(file='icones/sair.png')
+        botao0 = Button(fr1,text='Abrir',image=icone1,command=abrirarquivo)
+        botao0.image=icone1
+        botao0['font']=('Verdana','10')
+        botao0.pack(pady=10)
+
+
+        botao1 = Button(fr1,text='Analisar',image=icone2,command=analisador)
+
+        botao1.image=icone2
+        botao1['font']=('Verdana','10')
+        botao1.pack(pady=10)
+
+        botao2 = Button(fr1, text='Sobre',image=icone3, command=sobre, font=('Verdana','10'))
+        botao2.image=icone3
+        botao2.pack(pady=10)
+
+        botao3 = Button(fr1, text='Sair', image=icone4, command=root.destroy, font=('Verdana','10'))
+        botao3.image=icone4
+        botao3.pack(pady=10)
+
+        menubar = Menu(root)
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Abrir",font=8, command=abrirarquivo)
+        filemenu.add_command(label="Analisar",font=8, command=analisador)
+        filemenu.add_command(label="Sobre",font=8, command=sobre)
+
+        filemenu.add_separator()
+        filemenu.add_command(label="Sair",font=8, command=root.destroy)
+        menubar.add_cascade(label="Arquivo",font=8, menu=filemenu)
+        editmenu = Menu(menubar, tearoff=0)
+        editmenu.add_separator()
+        root.config(menu=menubar)
+        root.title('Analisador Lexico')
+
+root = Tk()
+root.geometry("300x450")
+janela(root)
+root.mainloop()
 

@@ -1,10 +1,13 @@
-Read a;
-Print a';
+a1 =:= V;
+Read rafael;
+Print as';
 Read a, b,c;
 Print a ^ b, a v b, a -> c;
 Read a,b,c; d =:= a ^ (b <-> c);
-if (d) { Print d ^ a; }
-else { Print d ^ c; }
+if (d) 
+	{ Print d ^ a; }
+else 
+	{ Print d ^ c; }
 a1 =:= V;
 b1 =:= F;
 cc1 =:= a1 -> b1;

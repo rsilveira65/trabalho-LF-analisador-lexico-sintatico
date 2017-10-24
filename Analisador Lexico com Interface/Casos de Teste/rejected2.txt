@@ -1,0 +1,2 @@
+Print vari4vel;
+Read 9dade;

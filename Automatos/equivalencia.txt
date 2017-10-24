@@ -1,0 +1,23 @@
+Símbolo - Significado - Token
+
+'       Negação         NOT 
+^       Conjunção       OR
+v       Disjunção       AND
+->      Implicação      IMP
+<->     Equivalência    EQU
+=:=     Atribuição      ATR
+,       Vírgula         VIR
+{       Chave Esquerda  CHE
+}       Chave Direita   CHD
+Print   Print           PRI
+Read    Read            REA
+EOF     Fim de Arquivo  EOF
+
+
+(       Parenteses esquerdo     PAE
+)       Parenteses direito      PAD
+;       Ponto e vírgula         PTV
+
+[0] U [F] U [False]     Falso           FAL
+[1] U [T] U [True]      Verdadeiro      TRU
+[a-z] U [A-Z] U [0-9]   Variável        VAR
